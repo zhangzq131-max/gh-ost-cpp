@@ -290,6 +290,17 @@ std::optional<uint32_t> StringUtils::ParseUInt32(const std::string& str) {
     return std::nullopt;
 }
 
+std::optional<uint16_t> StringUtils::ParseUInt16(const std::string& str) {
+    try {
+        size_t pos = 0;
+        uint16_t value = static_cast<uint16_t>(std::stoul(str, &pos));
+        if (pos == str.length() || Trim(str.substr(pos)).empty()) {
+            return value;
+        }
+    } catch (...) {}
+    return std::nullopt;
+}
+
 std::optional<uint64_t> StringUtils::ParseUInt64(const std::string& str) {
     try {
         size_t pos = 0;

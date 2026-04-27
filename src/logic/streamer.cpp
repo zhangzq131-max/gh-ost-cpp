@@ -88,14 +88,6 @@ BinlogCoordinates EventsStreamer::GetCurrentCoordinates() const {
     );
 }
 
-uint64_t EventsStreamer::TotalEventsRead() const {
-    return total_events_;
-}
-
-uint64_t EventsStreamer::DMLEventsProcessed() const {
-    return dml_events_;
-}
-
 void EventsStreamer::SetEventCallback(EventProcessedCallback callback) {
     event_callback_ = callback;
 }

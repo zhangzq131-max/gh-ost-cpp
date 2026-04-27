@@ -148,9 +148,10 @@ std::string TimeUtils::FormatDuration(const Duration& duration) {
     
     if (total_seconds < 0) return "0s";
     
-    uint64_t hours = static_cast<uint64_t>(total_seconds / 3600);
-    uint64_t minutes = static_cast<uint64_t>((total_seconds % 3600) / 60);
-    uint64_t seconds = static_cast<uint64_t>(total_seconds % 60);
+    uint64_t total_sec_int = static_cast<uint64_t>(total_seconds);
+    uint64_t hours = total_sec_int / 3600;
+    uint64_t minutes = (total_sec_int % 3600) / 60;
+    uint64_t seconds = total_sec_int % 60;
     
     std::ostringstream oss;
     if (hours > 0) oss << hours << "h ";
@@ -169,10 +170,11 @@ std::string TimeUtils::FormatDurationHuman(const Duration& duration) {
         return std::to_string(static_cast<uint64_t>(total_seconds * 1000)) + "ms";
     }
     
-    uint64_t days = static_cast<uint64_t>(total_seconds / 86400);
-    uint64_t hours = static_cast<uint64_t>((total_seconds % 86400) / 3600);
-    uint64_t minutes = static_cast<uint64_t>((total_seconds % 3600) / 60);
-    uint64_t seconds = static_cast<uint64_t>(total_seconds % 60);
+    uint64_t total_sec_int = static_cast<uint64_t>(total_seconds);
+    uint64_t days = total_sec_int / 86400;
+    uint64_t hours = (total_sec_int % 86400) / 3600;
+    uint64_t minutes = (total_sec_int % 3600) / 60;
+    uint64_t seconds = total_sec_int % 60;
     
     std::ostringstream oss;
     if (days > 0) oss << days << "d ";
@@ -437,13 +439,13 @@ std::string TimeUtils::ElapsedTimer::ToHumanString() const {
 TimeUtils::DeadlineTimer::DeadlineTimer(Duration timeout) 
     : timeout_(timeout) {
     start_ = Now();
-    deadline_ = start_ + timeout;
+    deadline_ = start_ + std::chrono::duration_cast<std::chrono::milliseconds>(timeout);
 }
 
 TimeUtils::DeadlineTimer::DeadlineTimer(uint64_t timeout_millis) 
     : timeout_(std::chrono::milliseconds(timeout_millis)) {
     start_ = Now();
-    deadline_ = start_ + timeout_;
+    deadline_ = start_ + std::chrono::milliseconds(timeout_millis);
 }
 
 bool TimeUtils::DeadlineTimer::IsExpired() const {
@@ -462,7 +464,7 @@ uint64_t TimeUtils::DeadlineTimer::RemainingMillis() const {
 
 void TimeUtils::DeadlineTimer::Reset() {
     start_ = Now();
-    deadline_ = start_ + timeout_;
+    deadline_ = start_ + std::chrono::duration_cast<std::chrono::milliseconds>(timeout_);
 }
 
 void TimeUtils::DeadlineTimer::Reset(Duration timeout) {

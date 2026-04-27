@@ -143,7 +143,7 @@ std::string BinlogDMLEvent::GenerateUpdateSQL(const BinlogRowData& row) const {
     oss << "UPDATE " << StringUtils::QuoteIdentifier(database_) 
         << "." << StringUtils::QuoteIdentifier(table_);
     
-    oss << " " << row.ToUpdateSQL(pk_column);
+    oss << " " << row.ToUpdateSQL(row.pk_column);
     
     return oss.str();
 }
@@ -153,7 +153,7 @@ std::string BinlogDMLEvent::GenerateDeleteSQL(const BinlogRowData& row) const {
     oss << "DELETE FROM " << StringUtils::QuoteIdentifier(database_) 
         << "." << StringUtils::QuoteIdentifier(table_);
     
-    oss << " WHERE " << StringUtils::QuoteIdentifier(pk_column) << " = ";
+    oss << " WHERE " << StringUtils::QuoteIdentifier(row.pk_column) << " = ";
     if (row.pk_value) {
         oss << "'" << StringUtils::EscapeForSQL(*row.pk_value) << "'";
     } else {

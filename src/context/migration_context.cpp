@@ -12,7 +12,8 @@
 namespace gh_ost {
 
 MigrationContext::MigrationContext()
-    : total_row_count_(0)
+    : sql_builder_("", "", "", "")
+    , total_row_count_(0)
     , copied_row_count_(0)
     , applied_event_count_(0)
     , queued_event_count_(0)

@@ -480,18 +480,19 @@ void Migrator::RunEventsApply() {
         }
         
         // Process event
-        if (entry->IsDML() && entry->IsForTable(
+        auto& entry_ptr = *entry;
+        if (entry_ptr->IsDML() && entry_ptr->IsForTable(
                 context_.DatabaseName(), context_.OriginalTableName())) {
             
             // Apply DML to ghost table
-            auto dml_event = entry->DmlEvent();
+            auto dml_event = entry_ptr->DmlEvent();
             if (dml_event) {
                 applier_->ApplyDMLEvent(dml_event);
             }
         }
         
         // Update current coordinates
-        context_.SetCurrentBinlogCoordinates(entry->Coordinates());
+        context_.SetCurrentBinlogCoordinates(entry_ptr->Coordinates());
         
         // Update statistics
         context_.AppliedEventCount()++;

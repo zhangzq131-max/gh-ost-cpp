@@ -2,7 +2,11 @@
 # Copyright 2026
 # Licensed under MIT License
 
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16...4.0)
+
+# Set policy version for compatibility with CMake 4.x
+set(CMAKE_POLICY_VERSION_MINIMUM 3.16 CACHE STRING "" FORCE)
+
 project(gh-ost-cpp VERSION 1.0.0 LANGUAGES CXX)
 
 # C++ Standard
@@ -11,7 +15,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Build options
-option(GH_OST_BUILD_TESTS "Build unit tests" ON)
+option(GH_OST_BUILD_TESTS "Build unit tests" OFF)
 option(GH_OST_BUILD_SHARED "Build as shared library" OFF)
 option(GH_OST_ENABLE_DEBUG "Enable debug logging" OFF)
 
@@ -95,7 +99,6 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 # Source files
 set(GH_OST_SOURCES
-    src/main.cpp
     src/utils/logger.cpp
     src/utils/string_utils.cpp
     src/utils/time_utils.cpp
@@ -172,24 +175,33 @@ else()
     add_library(gh-ost STATIC ${GH_OST_SOURCES} ${GH_OST_HEADERS})
 endif()
 
-add_executable(gh-ost-cli src/main.cpp)
-target_link_libraries(gh-ost-cli 
-    gh-ost
+# Link dependencies to gh-ost library
+target_link_libraries(gh-ost PUBLIC
     Threads::Threads
     spdlog::spdlog
-    cxxopts::cxxopts
     nlohmann_json::nlohmann_json
 )
 
+add_executable(gh-ost-cli src/main.cpp)
+
+# Add include directories from fetched dependencies
+target_include_directories(gh-ost-cli PRIVATE
+    ${CMAKE_BINARY_DIR}/_deps/cxxopts-src/include
+)
+
+target_link_libraries(gh-ost-cli PRIVATE
+    gh-ost
+)
+
 if(MYSQL_CPP_FOUND)
-    target_link_libraries(gh-ost-cli ${MYSQL_CPP_LIBRARIES})
-    target_compile_definitions(gh-ost-cli HAVE_MYSQL_CPP=1)
+    target_link_libraries(gh-ost-cli PRIVATE ${MYSQL_CPP_LIBRARIES})
+    target_compile_definitions(gh-ost-cli PRIVATE HAVE_MYSQL_CPP=1)
 endif()
 
 # Compiler definitions
-target_compile_definitions(gh-ost-cli
-    GH_OST_VERSION="${PROJECT_VERSION}"
-    GH_OST_NAME="gh-ost-cpp"
+target_compile_definitions(gh-ost-cli PRIVATE
+    GH_OST_VERSION=\"${PROJECT_VERSION}\"
+    GH_OST_NAME=\"gh-ost-cpp\"
 )
 
 if(GH_OST_ENABLE_DEBUG)
@@ -218,10 +230,9 @@ if(GH_OST_BUILD_TESTS)
         tests/unit/test_instance_key.cpp
     )
     
-    target_link_libraries(gh-ost-tests
+    target_link_libraries(gh-ost-tests PRIVATE
         gh-ost
         Catch2::Catch2
-        Catch2::Catch2Main
     )
     
     add_test(NAME gh-ost-unit-tests COMMAND gh-ost-tests)

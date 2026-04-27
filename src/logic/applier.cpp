@@ -247,7 +247,7 @@ bool Applier::ReadChangelog(const std::string& hint) {
     std::string sql = context_.GetSQLBuilder().BuildSelectChangelogSQL(hint);
     
     auto row = connection_->QueryRow(sql);
-    return row;
+    return row.has_value();
 }
 
 bool Applier::ClearChangelog() {

@@ -45,6 +45,17 @@ public:
     static std::string Join(const std::vector<std::string>& parts, const std::string& delimiter);
     static std::string Join(const std::vector<std::string_view>& parts, const std::string& delimiter);
     
+    // Join with transformer (lambda/function)
+    template<typename T, typename F>
+    static std::string Join(const std::vector<T>& items, F transformer, const std::string& delimiter) {
+        std::ostringstream result;
+        for (size_t i = 0; i < items.size(); ++i) {
+            if (i > 0) result << delimiter;
+            result << transformer(items[i]);
+        }
+        return result.str();
+    }
+    
     // Contains and find functions
     static bool Contains(const std::string& str, const std::string& substring);
     static bool Contains(const std::string& str, char ch);
@@ -82,6 +93,7 @@ public:
     // Number conversion
     static std::optional<int32_t> ParseInt32(const std::string& str);
     static std::optional<int64_t> ParseInt64(const std::string& str);
+    static std::optional<uint16_t> ParseUInt16(const std::string& str);
     static std::optional<uint32_t> ParseUInt32(const std::string& str);
     static std::optional<uint64_t> ParseUInt64(const std::string& str);
     static std::optional<double> ParseDouble(const std::string& str);

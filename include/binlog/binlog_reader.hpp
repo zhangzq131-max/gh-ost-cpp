@@ -42,7 +42,7 @@ public:
     void SetEventCallback(EventCallback callback);
     
     // Control
-    bool Start();
+    virtual bool Start();
     void Stop();
     bool IsRunning() const { return running_; }
     
@@ -112,51 +112,6 @@ private:
     
     // Server ID for slave registration
     uint32_t slave_server_id_;
-};
-
-// Events streamer - wraps binlog reader and provides filtering
-class EventsStreamer {
-public:
-    EventsStreamer();
-    ~EventsStreamer();
-    
-    // Configuration
-    void SetReplicaConnection(std::shared_ptr<Connection> connection);
-    void SetDatabase(const std::string& database);
-    void SetTable(const std::string& table);
-    void SetChangelogTable(const std::string& changelog_table);
-    
-    // Starting position
-    void Initiate();
-    BinlogCoordinates GetCurrentCoordinates() const;
-    
-    // Stream control
-    bool Start();
-    void Stop();
-    
-    // Event queue
-    SafeQueue<std::shared_ptr<BinlogEntry>>& EventQueue() { return event_queue_; }
-    
-    // Status
-    uint64_t TotalEventsProcessed() const;
-    uint64_t DMLEventsForTable() const;
-    
-private:
-    std::unique_ptr<BinlogReader> reader_;
-    std::shared_ptr<Connection> connection_;
-    std::string database_;
-    std::string table_;
-    std::string changelog_table_;
-    
-    SafeQueue<std::shared_ptr<BinlogEntry>> event_queue_;
-    
-    // Event handling
-    void HandleEvent(std::shared_ptr<BinlogEntry> entry);
-    bool ShouldProcessEvent(std::shared_ptr<BinlogEntry> entry) const;
-    
-    // Coordinates tracking
-    BinlogCoordinates current_coordinates_;
-    BinlogCoordinates initial_coordinates_;
 };
 
 } // namespace gh_ost

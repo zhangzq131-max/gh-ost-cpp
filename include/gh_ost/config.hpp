@@ -179,8 +179,8 @@ struct MigrationConfig {
     
     MigrationConfig() {}
     
-    // Validate configuration
-    ValidationResult Validate() const {
+    // Validate configuration (may modify ghost_table_name if empty)
+    ValidationResult Validate() {
         ValidationResult result;
         
         // Required fields

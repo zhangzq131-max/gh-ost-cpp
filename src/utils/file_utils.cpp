@@ -8,9 +8,17 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <thread>
 
 #ifdef _WIN32
 #include <windows.h>
+// Undefine Windows macros that conflict with our function names
+#ifdef CreateFile
+#undef CreateFile
+#endif
+#ifdef CreateDirectory
+#undef CreateDirectory
+#endif
 #include <io.h>
 #else
 #include <unistd.h>

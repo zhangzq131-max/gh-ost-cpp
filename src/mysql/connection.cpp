@@ -407,7 +407,7 @@ bool Connection::IsMaster() {
 
 bool Connection::IsReplica() {
     auto row = QueryRow("SHOW SLAVE STATUS");
-    return row;
+    return row.has_value();
 }
 
 uint64_t Connection::GetThreadsRunning() {

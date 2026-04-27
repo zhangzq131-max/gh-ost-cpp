@@ -64,6 +64,30 @@ struct RowData {
     }
 };
 
+// Column information
+struct ColumnInfo {
+    std::string name;
+    ColumnType type;
+    std::string type_detail;       // Full type definition from MySQL (e.g., "varchar(255)")
+    bool nullable;
+    std::optional<std::string> default_value;
+    bool auto_increment;
+    std::string extra;
+    
+    // For display
+    std::string ToString() const;
+};
+
+// Key information
+struct KeyInfo {
+    std::string name;
+    UniqueKeyType type;  // PRIMARY, UNIQUE, INDEX
+    std::vector<std::string> columns;
+    bool is_primary;
+    
+    std::string ToString() const;
+};
+
 // Table structure information
 struct TableStructure {
     std::string database;
@@ -76,27 +100,6 @@ struct TableStructure {
     std::optional<ColumnInfo> GetColumn(const std::string& name) const;
     std::optional<KeyInfo> GetPrimaryKey() const;
     std::vector<KeyInfo> GetUniqueKeys() const;
-};
-
-struct ColumnInfo {
-    std::string name;
-    ColumnType type;
-    bool nullable;
-    std::optional<std::string> default_value;
-    bool auto_increment;
-    std::string extra;
-    
-    // For display
-    std::string ToString() const;
-};
-
-struct KeyInfo {
-    std::string name;
-    UniqueKeyType type;  // PRIMARY, UNIQUE, INDEX
-    std::vector<std::string> columns;
-    bool is_primary;
-    
-    std::string ToString() const;
 };
 
 // MySQL connection wrapper

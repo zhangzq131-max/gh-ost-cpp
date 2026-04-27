@@ -13,12 +13,12 @@ namespace gh_ost {
 
 bool MySQLUtils::IsMaster(Connection& conn) {
     auto row = conn.QueryRow("SHOW SLAVE STATUS");
-    return !row;  // No slave status means master or standalone
+    return !row.has_value();  // No slave status means master or standalone
 }
 
 bool MySQLUtils::IsReplica(Connection& conn) {
     auto row = conn.QueryRow("SHOW SLAVE STATUS");
-    return row;
+    return row.has_value();
 }
 
 bool MySQLUtils::IsPercona(Connection& conn) {
@@ -274,7 +274,8 @@ std::optional<uint64_t> MySQLUtils::TableChecksum(Connection& conn,
     return std::nullopt;
 }
 
-std::string MySQLUtils::BuildSelectAllSQL(const std::string& database,
+std::string MySQLUtils::BuildSelectAllSQL(Connection& conn,
+                                          const std::string& database,
                                           const std::string& table,
                                           const std::string& key_column,
                                           const std::string& min_value,
@@ -296,7 +297,8 @@ std::string MySQLUtils::BuildSelectAllSQL(const std::string& database,
     return oss.str();
 }
 
-std::string MySQLUtils::BuildInsertSQL(const std::string& database,
+std::string MySQLUtils::BuildInsertSQL(Connection& conn,
+                                       const std::string& database,
                                        const std::string& table,
                                        const std::vector<std::string>& columns,
                                        const std::vector<std::string>& values) {
@@ -309,7 +311,8 @@ std::string MySQLUtils::BuildInsertSQL(const std::string& database,
     return oss.str();
 }
 
-std::string MySQLUtils::BuildUpdateSQL(const std::string& database,
+std::string MySQLUtils::BuildUpdateSQL(Connection& conn,
+                                       const std::string& database,
                                        const std::string& table,
                                        const std::string& key_column,
                                        const std::string& key_value,
@@ -328,7 +331,8 @@ std::string MySQLUtils::BuildUpdateSQL(const std::string& database,
     return oss.str();
 }
 
-std::string MySQLUtils::BuildDeleteSQL(const std::string& database,
+std::string MySQLUtils::BuildDeleteSQL(Connection& conn,
+                                       const std::string& database,
                                        const std::string& table,
                                        const std::string& key_column,
                                        const std::string& key_value) {

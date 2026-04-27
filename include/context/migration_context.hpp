@@ -29,7 +29,8 @@ public:
     
     // Configuration
     void SetConfig(const MigrationConfig& config);
-    MigrationConfig GetConfig() const { return config_; }
+    const MigrationConfig& GetConfig() const { return config_; }
+    MigrationConfig& GetConfig() { return config_; }
     
     // Connections
     void SetMasterConnection(std::shared_ptr<Connection> conn);

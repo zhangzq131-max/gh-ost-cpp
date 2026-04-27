@@ -7,6 +7,7 @@
 #include "throttle/throttler.hpp"
 #include "utils/logger.hpp"
 #include "utils/time_utils.hpp"
+#include "utils/string_utils.hpp"
 #include "mysql/utils.hpp"
 #include <sstream>
 

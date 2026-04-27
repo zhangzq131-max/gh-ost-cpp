@@ -73,25 +73,29 @@ public:
                                                  const std::string& table);
     
     // SQL generation helpers
-    static std::string BuildSelectAllSQL(const std::string& database,
+    static std::string BuildSelectAllSQL(Connection& conn,
+                                         const std::string& database,
                                          const std::string& table,
                                          const std::string& key_column,
                                          const std::string& min_value,
                                          const std::string& max_value,
                                          uint64_t limit);
     
-    static std::string BuildInsertSQL(const std::string& database,
+    static std::string BuildInsertSQL(Connection& conn,
+                                      const std::string& database,
                                       const std::string& table,
                                       const std::vector<std::string>& columns,
                                       const std::vector<std::string>& values);
     
-    static std::string BuildUpdateSQL(const std::string& database,
+    static std::string BuildUpdateSQL(Connection& conn,
+                                      const std::string& database,
                                       const std::string& table,
                                       const std::string& key_column,
                                       const std::string& key_value,
                                       const std::vector<std::pair<std::string, std::string>>& updates);
     
-    static std::string BuildDeleteSQL(const std::string& database,
+    static std::string BuildDeleteSQL(Connection& conn,
+                                      const std::string& database,
                                       const std::string& table,
                                       const std::string& key_column,
                                       const std::string& key_value);

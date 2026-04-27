@@ -7,6 +7,7 @@
 #include "logic/checkpoint.hpp"
 #include "utils/logger.hpp"
 #include "utils/string_utils.hpp"
+#include "utils/time_utils.hpp"
 
 namespace gh_ost {
 
@@ -140,11 +141,11 @@ std::string Checkpoint::HintToString(Hint hint) {
     }
 }
 
-bool CheckpointState::IsComplete() const {
+bool Checkpoint::CheckpointState::IsComplete() const {
     return hint == "completed";
 }
 
-bool CheckpointState::IsCancelled() const {
+bool Checkpoint::CheckpointState::IsCancelled() const {
     return hint == "cancelled" || hint == "panic-abort";
 }
 
