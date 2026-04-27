@@ -1,0 +1,93 @@
+# Build directories
+build/
+bin/
+lib/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+
+# IDE files
+.vs/
+.vscode/
+*.code-workspace
+.idea/
+
+# Object files
+*.o
+*.obj
+*.slo
+*.lo
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Libraries
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+files-target-bits
+files-target
+
+# Logs
+*.log
+
+# Package files
+*.tar.gz
+*.tgz
+*.zip
+
+# Test outputs
+Testing/
+CTestTestfile.cmake
+
+# Generated files
+*.generated.*
+
+# Temp files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Cursor/plans
+.cursor/
+*.plan.md
+
+# Documentation temp files
+docs/*.tmp
