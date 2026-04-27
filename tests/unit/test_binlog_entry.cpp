@@ -8,6 +8,7 @@
 #include "binlog/binlog_entry.hpp"
 #include "binlog/binlog_dml_event.hpp"
 #include "binlog/binlog_coordinates.hpp"
+#include "utils/string_utils.hpp"
 
 TEST_CASE("BinlogCoordinates::Basic", "[binlog]") {
     gh_ost::BinlogCoordinates coords("mysql-bin.000123", 456);

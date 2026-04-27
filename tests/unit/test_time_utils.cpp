@@ -6,6 +6,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include "utils/time_utils.hpp"
+#include "utils/string_utils.hpp"
 #include <thread>
 
 TEST_CASE("TimeUtils::NowUnix", "[time_utils]") {

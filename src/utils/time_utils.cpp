@@ -479,8 +479,8 @@ void TimeUtils::DeadlineTimer::Reset(uint64_t timeout_millis) {
 
 // RateLimiter implementation
 TimeUtils::RateLimiter::RateLimiter(uint64_t interval_millis) 
-    : interval_millis_(interval_millis) {
-    last_execution_ = Now();
+    : interval_millis_(interval_millis)
+    , last_execution_(TimePoint{}) {  // Initialize to epoch so first call returns true
 }
 
 bool TimeUtils::RateLimiter::ShouldProceed() {
